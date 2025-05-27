@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+import os
 from game_logic import get_random_truth_or_meme
 from multiplayer_logic import (
     create_user, create_room, join_room, submit_phrase, vote_submission, next_round,
@@ -39,8 +40,6 @@ def leave_room_route():
         session.pop('room_id', None)
     return redirect(url_for('lobby'))
 
-
-
 @app.route('/lobby', methods=['GET', 'POST'])
 def lobby():
     user_id = session.get('user_id')
@@ -63,7 +62,6 @@ def lobby_info():
     user_id = session.get('user_id')
     if not user_id or user_id not in users:
         return {'error': 'not allowed'}
-    # Includi anche i giocatori nelle stanze per aggiornamento live
     rooms_info = {}
     for room_id, room in rooms.items():
         rooms_info[room_id] = {
@@ -93,7 +91,6 @@ def room(room_id):
             next_round(room_id)
         elif 'restart_game' in request.form:
             if user_id == room['host_id']:
-                # Reset room state and scores
                 room['status'] = 'waiting'
                 room['current_round'] = 1
                 room['submissions'] = []
@@ -129,6 +126,5 @@ def play():
     return render_template('result.html', prompt=prompt, kind=kind)
 
 if __name__ == '__main__':
-    app.run(debug=True)
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
