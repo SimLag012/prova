@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Truth or Meme</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Truth or Meme</h1>
+    <form action="/play" method="post">
+        <button name="choice" value="truthormeme">Play</button>
+    </form>
+</body>
+</html>
