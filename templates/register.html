@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registrazione - Truth or Meme</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Registrati</h1>
+    <form method="post">
+        <label>Username:<br><input type="text" name="username" required></label><br><br>
+        <label>Nome visibile:<br><input type="text" name="display_name" required></label><br><br>
+        <button type="submit">Registrati</button>
+    </form>
+</body>
+</html>

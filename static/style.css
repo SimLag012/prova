@@ -1,15 +1,96 @@
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 40px;
-    background-color: #f9f9f9;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    color: #22223b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1, h2, h3 {
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: #3a3a5a;
+    margin-bottom: 0.5em;
+}
+
+form, .card, .container {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px 0 rgba(60,72,100,0.10);
+    padding: 2.5em 2em 2em 2em;
+    margin: 2em auto;
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
+}
+
+input[type="text"], select {
+    padding: 0.8em 1em;
+    border: 1.5px solid #c7d2fe;
+    border-radius: 8px;
+    font-size: 1.1em;
+    background: #f1f5ff;
+    transition: border 0.2s;
+}
+input[type="text"]:focus, select:focus {
+    border: 1.5px solid #6366f1;
+    outline: none;
 }
 
 button {
-    padding: 10px 20px;
-    font-size: 20px;
-    background-color: #007bff;
-    color: white;
+    padding: 0.9em 0;
+    font-size: 1.1em;
+    background: linear-gradient(90deg, #6366f1 0%, #60a5fa 100%);
+    color: #fff;
     border: none;
     border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px 0 rgba(99,102,241,0.10);
+    transition: background 0.2s, transform 0.1s;
+}
+button:hover {
+    background: linear-gradient(90deg, #60a5fa 0%, #6366f1 100%);
+    transform: translateY(-2px) scale(1.03);
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5em 0 0 0;
+}
+li {
+    background: #f1f5ff;
+    margin-bottom: 0.5em;
+    padding: 0.7em 1em;
+    border-radius: 8px;
+    font-size: 1.05em;
+    box-shadow: 0 1px 4px 0 rgba(99,102,241,0.04);
+}
+
+a {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+a:hover {
+    color: #3b82f6;
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    form, .card, .container {
+        padding: 1.2em 0.7em 1.2em 0.7em;
+        max-width: 98vw;
+    }
+    h1, h2, h3 {
+        font-size: 1.2em;
+    }
 }

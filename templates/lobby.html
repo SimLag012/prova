@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lobby - Truth or Meme</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='refresh.js') }}"></script>
+</head>
+<body>
+    <h1>Lobby</h1>
+    <form method="post">
+        <button name="create_room" value="1">Crea una nuova stanza</button>
+    </form>
+    <h2>Oppure unisciti a una stanza esistente</h2>
+    <form method="post">
+        <input type="text" name="room_id" placeholder="ID stanza" required>
+        <button name="join_room" value="1">Entra</button>
+    </form>
+    <h3>Stanze disponibili:</h3>
+    <ul>
+        {% for room_id, room in rooms.items() %}
+            <li>ID: {{ room_id }} | Host: {{ room['host_id'] }} | Stato: {{ room['status'] }}</li>
+        {% else %}
+            <li>Nessuna stanza disponibile</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
