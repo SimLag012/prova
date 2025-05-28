@@ -1,80 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Stanza {{ room['id'] }} - Truth or Meme</title>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="{{ url_for('static', filename='refresh.js') }}"></script>
+    <title>Room {{ room['id'] }}</title>
 </head>
 <body>
-    <h1>Stanza: {{ room['id'] }}</h1>
-    <h2>Giocatori:</h2>
+    <h1>Room ID: {{ room['id'] }}</h1>
+    <h2>Status: {{ room['status'] }}</h2>
+
+    <h3>Players:</h3>
     <ul>
         {% for player in players %}
-            <li>{{ player['display_name'] }} ({{ player['username'] }}) - Punteggio: {{ player['score'] }}</li>
+            <li>{{ player['display_name'] }} (Score: {{ player['score'] }})</li>
         {% endfor %}
     </ul>
-    <h3>Stato partita: {{ state['game_state'] }}</h3>
-    {% if room['status'] == 'finished' %}
-        <h2>Partita terminata!</h2>
-        <h3>Classifica finale:</h3>
+
+    {% if state['game_state'] == 'submission' %}
+        <h3>Submit your phrase</h3>
+        <form method="post">
+            <label>Your phrase:</label><br>
+            <input type="text" name="phrase" required><br><br>
+            <label>Type:</label>
+            <select name="actual_type">
+                <option value="truth">Truth</option>
+                <option value="meme">Meme</option>
+            </select><br><br>
+            <button type="submit" name="submit_phrase">Submit</button>
+        </form>
+
+    {% elif state['game_state'] == 'voting' %}
+        <h3>Vote the type of each phrase</h3>
+        <form method="post">
+            {% for s in state['submissions'] if s['player_id'] != user_id %}
+                <p><strong>{{ users[s['player_id']]['display_name'] }}</strong>: "{{ s['phrase'] }}"</p>
+                <select name="guessed_type_{{ s['player_id'] }}">
+                    <option value="truth">Truth</option>
+                    <option value="meme">Meme</option>
+                </select><br><br>
+            {% endfor %}
+            <button type="submit" name="vote_all">Submit Votes</button>
+        </form>
+
+    {% elif state['game_state'] == 'finished' %}
+        <h3>Game Over</h3>
+        <p><strong>Final Scores:</strong></p>
         <ul>
-            {% for player in players|sort(attribute='score', reverse=True) %}
-                <li>{{ player['display_name'] }} - {{ player['score'] }} punti</li>
+            {% for p in players %}
+                <li>{{ p['display_name'] }}: {{ p['score'] }}</li>
             {% endfor %}
         </ul>
-        <form method="post" style="display:inline;">
-            <button name="restart_game" value="1" style="background:#22c55e;">Ricomincia partita</button>
-        </form>
-        <form method="post" action="{{ url_for('leave_room_route') }}" style="display:inline;">
-            <button type="submit" style="background:#e11d48;">Esci dalla stanza</button>
-        </form>
-    {% elif state['game_state'] == 'lobby' %}
-        <p>In attesa che la partita inizi...</p>
+
         {% if user_id == room['host_id'] %}
             <form method="post">
-                <button name="next_round" value="1">Inizia la partita</button>
+                <button type="submit" name="restart_game">Restart Game</button>
             </form>
         {% endif %}
-    {% elif state['game_state'] == 'playing' %}
-        {% if user_id == room['current_player'] %}
-            <form method="post">
-                <label>Scrivi una frase (truth o meme):<br>
-                    <input type="text" name="phrase" required>
-                </label><br>
-                <label>Tipo:
-                    <select name="actual_type">
-                        <option value="truth">Truth</option>
-                        <option value="meme">Meme</option>
-                    </select>
-                </label><br>
-                <button name="submit_phrase" value="1">Invia</button>
-            </form>
-        {% else %}
-            <p>In attesa che il giocatore di turno invii una frase...</p>
-        {% endif %}
-    {% elif state['voting'] %}
-        {% if user_id != room['current_player'] %}
-            <form method="post">
-                <p>Frase: <b>{{ state['current_submission']['phrase'] }}</b></p>
-                <label>Secondo te è:
-                    <select name="guessed_type">
-                        <option value="truth">Truth</option>
-                        <option value="meme">Meme</option>
-                    </select>
-                </label>
-                <button name="vote" value="1">Vota</button>
-            </form>
-        {% else %}
-            <p>In attesa che gli altri votino...</p>
-        {% endif %}
-        <form method="post">
-            <button name="next_round" value="1">Prossimo round</button>
-        </form>
     {% endif %}
-    {% if room['status'] != 'finished' %}
+
     <form method="post" action="{{ url_for('leave_room_route') }}">
-        <button type="submit" style="background:#e11d48;">Esci dalla stanza</button>
+        <button type="submit">Leave Room</button>
     </form>
-    {% endif %}
 </body>
 </html>

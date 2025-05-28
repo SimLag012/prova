@@ -6,21 +6,17 @@
     <script src="{{ url_for('static', filename='refresh.js') }}"></script>
 </head>
 <body>
-    <h1>Lobby</h1>
-    <form method="post">
-        <button name="create_room" value="1">Crea una nuova stanza</button>
+<h2>Lobby</h2>
+<form method="post">
+    <button name="create_room">Create Room</button>
     </form>
-    <h2>Oppure unisciti a una stanza esistente</h2>
     <form method="post">
-        <input type="text" name="room_id" placeholder="ID stanza" required>
-        <button name="join_room" value="1">Entra</button>
+        <input name="room_id" placeholder="Room ID" required>
+        <button name="join_room">Join Room</button>
     </form>
-    <h3>Stanze disponibili:</h3>
     <ul>
         {% for room_id, room in rooms.items() %}
-            <li>ID: {{ room_id }} | Host: {{ room['host_id'] }} | Stato: {{ room['status'] }}</li>
-        {% else %}
-            <li>Nessuna stanza disponibile</li>
+            <li>{{ room_id }} - Host: {{ users[room['host_id']]['display_name'] }} - Status: {{ room['status'] }}</li>
         {% endfor %}
     </ul>
 </body>

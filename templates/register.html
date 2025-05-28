@@ -7,9 +7,11 @@
 <body>
     <h1>Registrati</h1>
     <form method="post">
-        <label>Username:<br><input type="text" name="username" required></label><br><br>
-        <label>Nome visibile:<br><input type="text" name="display_name" required></label><br><br>
-        <button type="submit">Registrati</button>
+        <input name="username" placeholder="Username" required>
+        <input name="display_name" placeholder="Display Name" required>
+        <button type="submit">Register</button>
+        {% if error %}<p>{{ error }}</p>{% endif %}
     </form>
+
 </body>
 </html>
